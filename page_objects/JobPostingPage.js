@@ -53,7 +53,8 @@ export class JobPostingPage {
     await this.firstJobLink.click();
   }
 
-  async matchingKeyword(keyword) {
-    return await this.page.getByText(keyword);
+  async gotoJobApplicationPage() {
+    await this.applyNowButtonDropDown.click();
+    await this.applyNowMenuItem.click();
   }
 }
