@@ -12,7 +12,7 @@ export class JobApplicationPage {
     this.phoneNumberField = this.page.getByRole("textbox", {
       name: "Primary Phone",
     });
-    this.howDidYouHearField = this.page.getByRole("Button", {
+    this.howDidYouHearField = this.page.getByRole("combobox", {
       name: "How did you hear about this job?",
     });
     this.applyButton = this.page.getByRole("button", { name: "Apply" });
@@ -29,9 +29,15 @@ export class JobApplicationPage {
     });
     this.passwordField = this.page.getByRole("textbox", { name: "Password:" });
     this.signInButton = this.page.getByRole("button", { name: "Sign In" });
+    this.alreadyAUserButton = this.page.getByRole("link", {
+      name: "Please sign in",
+    });
   }
 
   async login() {
+    if (await this.alreadyAUserButton.isVisible()) {
+      await this.alreadyAUserButton.click();
+    }
     await this.loginEmailField.click();
     await this.loginEmailField.fill(process.env.EMAIL);
     await this.passwordField.click();
@@ -40,9 +46,11 @@ export class JobApplicationPage {
   }
 
   async fillInJobApp() {
-    await this.expandAllSectionsButton.click();
-    await this.firstNameField.click();
-    await this.firstNameField.fill(faker.person.firstName());
+    if (!(await this.expandAllSectionsButton.isVisible())) {
+      await this.expandAllSectionsButton.click();
+      await this.firstNameField.click();
+      await this.firstNameField.fill(faker.person.firstName());
+    }
 
     await this.lastNameField.click();
     await this.lastNameField.fill(faker.person.lastName());
@@ -54,6 +62,6 @@ export class JobApplicationPage {
     await this.phoneNumberField.fill(faker.phone.number());
 
     await this.howDidYouHearField.click();
-    await this.howDidYouHearField.selectOption("Agency");
+    await this.page.getByRole("option", { name: "Agency" }).click();
   }
 }
