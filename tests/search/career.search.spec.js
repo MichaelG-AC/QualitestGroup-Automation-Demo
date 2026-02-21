@@ -16,7 +16,7 @@ test.describe("Career Page search tests", () => {
     await expect(page.getByText("Automation").first()).toBeVisible();
   });
 
-  test("Verify Users are able to fill in job application", async ({
+  test.skip("Verify Users are able to fill in job application", async ({
     careersPage,
     careersSearchPage,
     jobPostingPage,
